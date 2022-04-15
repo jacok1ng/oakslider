@@ -1,0 +1,89 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+main {
+  width: 100vw;
+  height: 100vh;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+}
+
+.slider {
+  width: 40rem;
+  height: 20rem;
+  background-color: gray;
+  border-radius: 1rem;
+  justify-content: center;
+  align-items: flex-end;
+  display: flex;
+  position: relative;
+  overflow: hidden;
+}
+
+.image {
+  object-fit: cover;
+  width: 100%;
+  height: 100%;
+}
+
+.photo {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.next-photo {
+  position: absolute;
+  top: 0;
+  right: 0;
+  transform: translateX(100%);
+}
+
+.menu {
+  color: #fff;
+  z-index: 1;
+  justify-content: space-evenly;
+  display: flex;
+}
+
+.arrow {
+  cursor: pointer;
+  font-size: 1.2rem;
+}
+
+.pagination {
+  width: 10rem;
+  justify-content: space-around;
+  align-items: center;
+  display: flex;
+}
+
+.clickable {
+  cursor: pointer;
+}
+
+.moveToLeft {
+  animation: toLeft 2s;
+}
+
+.moveToLeft2 {
+  animation: toLeft2 2s;
+}
+
+@keyframes toLeft {
+  to {
+    transform: translateX(-100%);
+  }
+}
+
+@keyframes toLeft2 {
+  to {
+    transform: translateX(0%);
+  }
+}
+
+/*# sourceMappingURL=index.3a01df49.css.map */

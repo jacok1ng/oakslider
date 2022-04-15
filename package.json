@@ -1,0 +1,14 @@
+{
+  "name": "Slider",
+  "version": "1.0.0",
+  "main": "app.js",
+  "author": "Jaca",
+  "license": "MIT",
+  "type": "commonjs",
+  "scripts": {
+    "start": "parcel ./src/index.html"
+  },
+  "devDependencies": {
+    "parcel": "^2.4.1"
+  }
+}
