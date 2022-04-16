@@ -146,4 +146,13 @@ input {
   transform: translateY(100%);
 }
 
+.img-btn {
+  color: #fff;
+  background: #06f;
+  border: none;
+  border-radius: .3rem;
+  padding: .5rem 2rem;
+  font-size: .95rem;
+}
+
 /*# sourceMappingURL=index.2cdaf7bc.css.map */

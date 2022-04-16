@@ -146,3 +146,12 @@ input {
 .hide {
   transform: translateY(100%);
 }
+
+.img-btn {
+  padding: 0.5rem 2rem;
+  font-size: 0.95rem;
+  border: none;
+  color: white;
+  background: #0066ff;
+  border-radius: 0.3rem;
+}

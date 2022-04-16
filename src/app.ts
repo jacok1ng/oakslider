@@ -6,10 +6,9 @@ import { useCustomForm } from './shared/customForm'
 
 //Variables
 let assets: ImageAsset[] = data
-const { moveSlide, init, restartTimer, setAnimDuration, setSlideDuration } =
-  useAnimateSlide({
-    assets,
-  })
+const { init, setAnimDuration, setSlideDuration } = useAnimateSlide({
+  assets,
+})
 const { init: formInit } = useCustomForm({ setAnimDuration, setSlideDuration })
 
 init()

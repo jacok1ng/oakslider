@@ -520,7 +520,7 @@ var _customForm = require("./shared/customForm");
 'use strict';
 //Variables
 let assets = _imagesJson.data;
-const { moveSlide , init , restartTimer , setAnimDuration , setSlideDuration  } = _shared.useAnimateSlide({
+const { init , setAnimDuration , setSlideDuration  } = _shared.useAnimateSlide({
     assets
 });
 const { init: formInit  } = _customForm.useCustomForm({
@@ -693,9 +693,6 @@ const useAnimateSlide = ({ assets  })=>{
     };
     return {
         init,
-        moveSlide,
-        isAnimating,
-        restartTimer,
         setAnimDuration,
         setSlideDuration
     };

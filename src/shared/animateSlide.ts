@@ -183,9 +183,6 @@ export const useAnimateSlide = ({ assets }: AnimateSlideInterface) => {
 
   return {
     init,
-    moveSlide,
-    isAnimating,
-    restartTimer,
     setAnimDuration,
     setSlideDuration,
   }
