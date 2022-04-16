@@ -17,8 +17,9 @@ main {
   height: 20rem;
   background-color: gray;
   border-radius: 1rem;
-  justify-content: center;
-  align-items: flex-end;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
   display: flex;
   position: relative;
   overflow: hidden;
@@ -43,6 +44,13 @@ main {
   transform: translateX(100%);
 }
 
+.previous-photo {
+  position: absolute;
+  top: 0;
+  left: 0;
+  transform: translateX(-100%);
+}
+
 .menu {
   color: #fff;
   z-index: 1;
@@ -64,26 +72,6 @@ main {
 
 .clickable {
   cursor: pointer;
-}
-
-.moveToLeft {
-  animation: toLeft 2s;
-}
-
-.moveToLeft2 {
-  animation: toLeft2 2s;
-}
-
-@keyframes toLeft {
-  to {
-    transform: translateX(-100%);
-  }
-}
-
-@keyframes toLeft2 {
-  to {
-    transform: translateX(0%);
-  }
 }
 
 /*# sourceMappingURL=index.2cdaf7bc.css.map */

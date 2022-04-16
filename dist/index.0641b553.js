@@ -515,85 +515,174 @@ function hmrAcceptRun(bundle, id) {
 
 },{}],"bNKaB":[function(require,module,exports) {
 var _imagesJson = require("../assets/images.json");
+var _shared = require("./shared");
 'use strict';
 //Handlers
-const pagination = document.querySelector('.pagination');
 const currentPhoto = document.querySelector('.photo');
 const nextPhoto = document.querySelector('.next-photo');
+const previousPhoto = document.querySelector('.previous-photo');
 const right = document.querySelector('.right');
 const left = document.querySelector('.left');
 //Variables
 let assets = _imagesJson.data;
-let indexOfPhoto = 0;
 let timer = null;
+let intervalTime = 3500;
+const { moveSlide , updateMenu  } = _shared.useAnimateSlide(assets);
 initSlider();
 function initSlider() {
     //Reset variables
-    indexOfPhoto = 0;
+    previousPhoto.src = assets[assets.length - 1].src;
     currentPhoto.src = assets[0].src;
     nextPhoto.src = assets[1].src;
     //Insert pagination
     updateMenu();
     //Interval
     timer = setInterval(()=>{
-        currentPhoto.classList.toggle('moveToLeft');
-        nextPhoto.classList.toggle('moveToLeft2');
-    }, 2000);
+        moveSlide('right');
+    }, intervalTime);
 }
-currentPhoto.addEventListener('animationend', ()=>{
-    assets[indexOfPhoto % assets.length].inUse = false;
-    assets[(indexOfPhoto + 1) % assets.length].inUse = true;
-    currentPhoto.classList.toggle('moveLeft');
-    nextPhoto.classList.toggle('moveLeft2');
-    indexOfPhoto++;
-    //Change photos
-    currentPhoto.src = assets[indexOfPhoto % assets.length].src;
-    nextPhoto.src = assets[(indexOfPhoto + 1) % assets.length].src;
-    updateMenu();
+right.addEventListener('click', ()=>{
+    clearInterval(timer);
+    moveSlide('right');
+    timer = setInterval(()=>{
+        moveSlide('right');
+    }, intervalTime);
 });
 left.addEventListener('click', ()=>{
     clearInterval(timer);
+    moveSlide('left');
     timer = setInterval(()=>{
-        currentPhoto.classList.toggle('moveToLeft');
-        nextPhoto.classList.toggle('moveToLeft2');
-    }, 2000);
-    anim('left');
+        moveSlide('right');
+    }, intervalTime);
 });
-currentPhoto.onfinish = ()=>console.log('finish')
-;
-function updateMenu() {
-    pagination.innerHTML = `${assets.map(({ inUse  })=>inUse ? '<i class="fa-solid fa-circle clickable"></i>' : '<i class="fa-solid fa-circle-notch clickable"></i>'
-    ).join('')}`;
-}
-const anim = (direction)=>{
-    if (direction === 'left') {
-        currentPhoto.animate({
-            transform: `translateX(-100%)`
-        }, {
-            duration: 2000
-        });
-        nextPhoto.animate({
-            transform: `translateX(0%)`
-        }, {
-            duration: 2000
-        });
-    }
-    if (direction === 'right') {
-        currentPhoto.animate({
-            transform: `translateX(100%)`
-        }, {
-            duration: 2000
-        });
-        nextPhoto.animate({
-            transform: `translateX(0%)`
-        }, {
-            duration: 2000
-        });
-    }
+
+},{"../assets/images.json":"8XdmB","./shared":"kh1eD"}],"8XdmB":[function(require,module,exports) {
+module.exports = JSON.parse("{\"data\":[{\"inUse\":true,\"src\":\"https://images.pexels.com/photos/9754/mountains-clouds-forest-fog.jpg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260\"},{\"inUse\":false,\"src\":\" https://images.pexels.com/photos/933054/pexels-photo-933054.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260\"},{\"inUse\":false,\"src\":\" https://images.pexels.com/photos/167699/pexels-photo-167699.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260\"}]}");
+
+},{}],"kh1eD":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+var _animateSlide = require("./animateSlide");
+parcelHelpers.exportAll(_animateSlide, exports);
+
+},{"./animateSlide":"4VnHc","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"4VnHc":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "useAnimateSlide", ()=>useAnimateSlide
+);
+const useAnimateSlide = (assets)=>{
+    let isAnimating = false;
+    let indexOfPhoto = 0;
+    const currentPhoto = document.querySelector('.photo');
+    const nextPhoto = document.querySelector('.next-photo');
+    const previousPhoto = document.querySelector('.previous-photo');
+    const pagination = document.querySelector('.pagination');
+    const moveSlide = (direction, customAnim)=>{
+        if (isAnimating) return;
+        isAnimating = true;
+        if (direction === 'right') {
+            console.log('right');
+            const anim = currentPhoto.animate({
+                transform: 'translateX(-100%)'
+            }, {
+                duration: 1500,
+                easing: 'ease'
+            });
+            nextPhoto.animate({
+                transform: 'translateX(0%)'
+            }, {
+                duration: 1500,
+                easing: 'ease'
+            });
+            if (customAnim) return customAnim();
+            anim.onfinish = ()=>{
+                assets[indexOfPhoto % assets.length].inUse = false;
+                assets[(indexOfPhoto + 1) % assets.length].inUse = true;
+                indexOfPhoto++;
+                //Change photos
+                previousPhoto.src = assets[(indexOfPhoto - 1) % assets.length].src;
+                currentPhoto.src = assets[indexOfPhoto % assets.length].src;
+                nextPhoto.src = assets[(indexOfPhoto + 1) % assets.length].src;
+                updateMenu();
+                isAnimating = false;
+            };
+        }
+        if (direction === 'left') {
+            console.log('left');
+            const anim = currentPhoto.animate({
+                transform: 'translateX(100%)'
+            }, {
+                duration: 1500,
+                easing: 'ease'
+            });
+            previousPhoto.animate({
+                transform: 'translateX(0%)'
+            }, {
+                duration: 1500,
+                easing: 'ease'
+            });
+            if (customAnim) return customAnim();
+            anim.onfinish = ()=>{
+                --indexOfPhoto;
+                if (indexOfPhoto < 0) indexOfPhoto = assets.length - 1;
+                const incrementedIndex = indexOfPhoto + 1 > assets.length - 1 ? 0 : indexOfPhoto + 1;
+                const decrementedIndex = indexOfPhoto - 1 < 0 ? assets.length - 1 : indexOfPhoto - 1;
+                assets[incrementedIndex].inUse = false;
+                assets[indexOfPhoto].inUse = true;
+                //Change photos
+                previousPhoto.src = assets[decrementedIndex].src;
+                currentPhoto.src = assets[indexOfPhoto].src;
+                nextPhoto.src = assets[incrementedIndex].src;
+                updateMenu();
+                isAnimating = false;
+            };
+        }
+    };
+    const updateMenu = ()=>{
+        pagination.innerHTML = `${assets.map(({ inUse  }, index)=>inUse ? `<i class="fa-solid fa-circle clickable dot dot-${index}"></i>` : `<i class="fa-solid fa-circle-notch clickable dot dot-${index}"></i>`
+        ).join('')}`;
+        document.querySelectorAll('.dot').forEach((item, index)=>item.addEventListener('click', ()=>{
+                if (index > indexOfPhoto) // to right
+                moveSlide('right', ()=>{});
+            })
+        );
+    };
+    return {
+        moveSlide,
+        isAnimating,
+        updateMenu
+    };
 };
 
-},{"../assets/images.json":"8XdmB"}],"8XdmB":[function(require,module,exports) {
-module.exports = JSON.parse("{\"data\":[{\"inUse\":true,\"src\":\"https://images.pexels.com/photos/9754/mountains-clouds-forest-fog.jpg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260\"},{\"inUse\":false,\"src\":\" https://images.pexels.com/photos/933054/pexels-photo-933054.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260\"},{\"inUse\":false,\"src\":\" https://images.pexels.com/photos/167699/pexels-photo-167699.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260\"}]}");
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"gkKU3":[function(require,module,exports) {
+exports.interopDefault = function(a) {
+    return a && a.__esModule ? a : {
+        default: a
+    };
+};
+exports.defineInteropFlag = function(a) {
+    Object.defineProperty(a, '__esModule', {
+        value: true
+    });
+};
+exports.exportAll = function(source, dest) {
+    Object.keys(source).forEach(function(key) {
+        if (key === 'default' || key === '__esModule' || dest.hasOwnProperty(key)) return;
+        Object.defineProperty(dest, key, {
+            enumerable: true,
+            get: function() {
+                return source[key];
+            }
+        });
+    });
+    return dest;
+};
+exports.export = function(dest, destName, get) {
+    Object.defineProperty(dest, destName, {
+        enumerable: true,
+        get: get
+    });
+};
 
 },{}]},["6IXwR","bNKaB"], "bNKaB", "parcelRequireaa46")
 
