@@ -518,20 +518,15 @@ var _imagesJson = require("../assets/images.json");
 var _shared = require("./shared");
 'use strict';
 //Handlers
-const currentPhoto = document.querySelector('.photo');
-const nextPhoto = document.querySelector('.next-photo');
-const previousPhoto = document.querySelector('.previous-photo');
 const right = document.querySelector('.right');
 const left = document.querySelector('.left');
 //Variables
 let assets = _imagesJson.data;
-let timer = null;
-let intervalTime = 3500;
-const { moveSlide , updateMenu  } = _shared.useAnimateSlide({
-    assets,
-    restartTimer
+const { moveSlide , init , restartTimer  } = _shared.useAnimateSlide({
+    assets
 });
-initSlider();
+init();
+//Events
 right.addEventListener('click', ()=>{
     restartTimer();
     moveSlide(_shared.MoveDirection.Right);
@@ -540,24 +535,6 @@ left.addEventListener('click', ()=>{
     restartTimer();
     moveSlide(_shared.MoveDirection.Left);
 });
-function restartTimer() {
-    clearInterval(timer);
-    timer = setInterval(()=>{
-        moveSlide(_shared.MoveDirection.Right);
-    }, intervalTime);
-}
-function initSlider() {
-    //Reset variables
-    previousPhoto.src = assets[assets.length - 1].src;
-    currentPhoto.src = assets[0].src;
-    nextPhoto.src = assets[1].src;
-    //Insert pagination
-    updateMenu();
-    //Interval
-    timer = setInterval(()=>{
-        moveSlide(_shared.MoveDirection.Right);
-    }, intervalTime);
-}
 
 },{"../assets/images.json":"8XdmB","./shared":"3itdU"}],"8XdmB":[function(require,module,exports) {
 module.exports = JSON.parse("{\"data\":[{\"inUse\":true,\"src\":\"https://images.pexels.com/photos/9754/mountains-clouds-forest-fog.jpg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260\"},{\"inUse\":false,\"src\":\" https://images.pexels.com/photos/933054/pexels-photo-933054.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260\"},{\"inUse\":false,\"src\":\" https://images.pexels.com/photos/167699/pexels-photo-167699.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260\"}]}");
@@ -576,13 +553,26 @@ parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "useAnimateSlide", ()=>useAnimateSlide
 );
 var _types = require("./types");
-const useAnimateSlide = ({ assets , restartTimer  })=>{
+const useAnimateSlide = ({ assets  })=>{
     let isAnimating = false;
     let indexOfPhoto = 0;
+    let timer = null;
+    let intervalTime = 3500;
     const currentPhoto = document.querySelector('.photo');
     const nextPhoto = document.querySelector('.next-photo');
     const previousPhoto = document.querySelector('.previous-photo');
     const pagination = document.querySelector('.pagination');
+    const init = ()=>{
+        previousPhoto.src = assets[assets.length - 1].src;
+        currentPhoto.src = assets[0].src;
+        nextPhoto.src = assets[1].src;
+        //Insert pagination
+        updateMenu();
+        //Interval
+        timer = setInterval(()=>{
+            moveSlide(_types.MoveDirection.Right);
+        }, intervalTime);
+    };
     const moveSlide = (direction, customAnim)=>{
         if (isAnimating) return;
         isAnimating = true;
@@ -681,10 +671,17 @@ const useAnimateSlide = ({ assets , restartTimer  })=>{
         currentPhoto.src = assets[index].src;
         nextPhoto.src = assets[incrementedIndex].src;
     };
+    const restartTimer = ()=>{
+        clearInterval(timer);
+        timer = setInterval(()=>{
+            moveSlide(_types.MoveDirection.Right);
+        }, intervalTime);
+    };
     return {
+        init,
         moveSlide,
         isAnimating,
-        updateMenu
+        restartTimer
     };
 };
 

@@ -2,21 +2,32 @@ import { ImageAsset, MoveDirection } from './types'
 
 interface AnimateSlideInterface {
   assets: ImageAsset[]
-  restartTimer: () => void
 }
 
-export const useAnimateSlide = ({
-  assets,
-  restartTimer,
-}: AnimateSlideInterface) => {
+export const useAnimateSlide = ({ assets }: AnimateSlideInterface) => {
   let isAnimating = false
   let indexOfPhoto = 0
+  let timer: number | null = null
+  let intervalTime = 3500
   const currentPhoto: HTMLImageElement = document.querySelector('.photo')
   const nextPhoto: HTMLImageElement = document.querySelector('.next-photo')
   const previousPhoto: HTMLImageElement =
     document.querySelector('.previous-photo')
   const pagination = document.querySelector('.pagination')
 
+  const init = () => {
+    previousPhoto.src = assets[assets.length - 1].src
+    currentPhoto.src = assets[0].src
+    nextPhoto.src = assets[1].src
+
+    //Insert pagination
+    updateMenu()
+
+    //Interval
+    timer = setInterval(() => {
+      moveSlide(MoveDirection.Right)
+    }, intervalTime)
+  }
   const moveSlide = (
     direction: MoveDirection,
     customAnim?: (anim: Animation) => void
@@ -141,6 +152,12 @@ export const useAnimateSlide = ({
     currentPhoto.src = assets[index].src
     nextPhoto.src = assets[incrementedIndex].src
   }
+  const restartTimer = () => {
+    clearInterval(timer)
+    timer = setInterval(() => {
+      moveSlide(MoveDirection.Right)
+    }, intervalTime)
+  }
 
-  return { moveSlide, isAnimating, updateMenu }
+  return { init, moveSlide, isAnimating, restartTimer }
 }
