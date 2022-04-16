@@ -11,6 +11,12 @@
       crossorigin="anonymous"
       referrerpolicy="no-referrer"
     />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Hurricane&family=Montserrat:wght@300;400;500&display=swap"
+      rel="stylesheet"
+    />
     <link rel="stylesheet" href="style.css" />
     <title>Oak Slider</title>
   </head>
@@ -18,19 +24,9 @@
     <main>
       <div class="slider">
         <div class="photos">
-          <img
-            class="image previous-photo"
-            src="https://images.pexels.com/photos/346529/pexels-photo-346529.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260"
-          />
-          <img
-            class="photo image"
-            src="https://images.ctfassets.net/hrltx12pl8hq/5KiKmVEsCQPMNrbOE6w0Ot/341c573752bf35cb969e21fcd279d3f9/hero-img_copy.jpg?fit=fill&w=800&h=300"
-            alt="Mountains"
-          />
-          <img
-            class="image next-photo"
-            src="https://images.pexels.com/photos/346529/pexels-photo-346529.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260"
-          />
+          <img class="image previous-photo" src=" " alt="previous-photo" />
+          <img class="photo image" src=" " alt="current-photo" />
+          <img class="image next-photo" src=" " alt="next-photo" />
         </div>
         <div class="menu">
           <div class="left arrow">
@@ -41,6 +37,32 @@
             <i class="fa-solid fa-angle-right"></i>
           </div>
         </div>
+      </div>
+      <div class="custom-menu">
+        <button class="btn-custom clickable">Custom</button>
+        <form>
+          <div class="reveal-menu"></div>
+          <div class="margin-1 column">
+            <label for="slide-interval">Duration of slide</label>
+            <div class="row">
+              <input id="slide-duration" type="number" /><button
+                class="apply-btn apply-slide clickable"
+              >
+                Apply
+              </button>
+            </div>
+          </div>
+          <div class="margin-1 column">
+            <label for="anim-interval">Duration of animation</label>
+            <div class="row">
+              <input id="anim-duration" type="number" /><button
+                class="apply-btn apply-anim clickable"
+              >
+                Apply
+              </button>
+            </div>
+          </div>
+        </form>
       </div>
     </main>
     <script type="module" src="./app.ts"></script>

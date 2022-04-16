@@ -2,11 +2,13 @@
   box-sizing: border-box;
   margin: 0;
   padding: 0;
+  font-family: Montserrat, sans-serif;
 }
 
 main {
   width: 100vw;
   height: 100vh;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   display: flex;
@@ -72,6 +74,75 @@ main {
 
 .clickable {
   cursor: pointer;
+}
+
+.custom-menu {
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 2rem;
+  display: flex;
+}
+
+.btn-custom {
+  color: #fff;
+  background: #06f;
+  border: none;
+  border-radius: .3rem;
+  padding: .5rem 2rem;
+  font-size: .95rem;
+}
+
+.reveal-menu {
+  background-color: #fff;
+}
+
+form {
+  flex-direction: column;
+  margin: 1rem;
+  display: flex;
+  position: relative;
+}
+
+input {
+  padding: .3rem .4rem;
+}
+
+.margin-1 {
+  margin: 1rem;
+}
+
+.column {
+  flex-direction: column;
+  display: flex;
+}
+
+.apply-btn {
+  color: #fff;
+  background: #06f;
+  border: none;
+  border-radius: .3rem;
+  margin-left: 1rem;
+  padding: .5rem 2rem;
+  font-size: .8rem;
+  transition: all .5s;
+}
+
+.accept-btn {
+  background-color: #14db43;
+}
+
+.reveal-menu {
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  background-color: #fff;
+  transition: all 1s;
+  position: absolute;
+}
+
+.hide {
+  transform: translateY(100%);
 }
 
 /*# sourceMappingURL=index.2cdaf7bc.css.map */

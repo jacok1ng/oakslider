@@ -8,7 +8,8 @@ export const useAnimateSlide = ({ assets }: AnimateSlideInterface) => {
   let isAnimating = false
   let indexOfPhoto = 0
   let timer: number | null = null
-  let intervalTime = 3500
+  let slideTime = 3.5
+  let animTime = 1.5
   const currentPhoto: HTMLImageElement = document.querySelector('.photo')
   const nextPhoto: HTMLImageElement = document.querySelector('.next-photo')
   const previousPhoto: HTMLImageElement =
@@ -24,9 +25,10 @@ export const useAnimateSlide = ({ assets }: AnimateSlideInterface) => {
     updateMenu()
 
     //Interval
+    clearInterval(timer)
     timer = setInterval(() => {
       moveSlide(MoveDirection.Right)
-    }, intervalTime)
+    }, slideTime * 1000)
   }
   const moveSlide = (
     direction: MoveDirection,
@@ -38,11 +40,11 @@ export const useAnimateSlide = ({ assets }: AnimateSlideInterface) => {
     if (direction === MoveDirection.Right) {
       const anim = currentPhoto.animate(
         { transform: 'translateX(-100%)' },
-        { duration: 1500, easing: 'ease' }
+        { duration: animTime * 1000, easing: 'ease' }
       )
       nextPhoto.animate(
         { transform: 'translateX(0%)' },
-        { duration: 1500, easing: 'ease' }
+        { duration: animTime * 1000, easing: 'ease' }
       )
 
       if (customAnim) return customAnim(anim)
@@ -65,11 +67,11 @@ export const useAnimateSlide = ({ assets }: AnimateSlideInterface) => {
     if (direction === MoveDirection.Left) {
       const anim = currentPhoto.animate(
         { transform: 'translateX(100%)' },
-        { duration: 1500, easing: 'ease' }
+        { duration: animTime * 1000, easing: 'ease' }
       )
       previousPhoto.animate(
         { transform: 'translateX(0%)' },
-        { duration: 1500, easing: 'ease' }
+        { duration: animTime * 1000, easing: 'ease' }
       )
 
       if (customAnim) return customAnim(anim)
@@ -103,7 +105,7 @@ export const useAnimateSlide = ({ assets }: AnimateSlideInterface) => {
       item.addEventListener('click', () => {
         if (index > indexOfPhoto) {
           // to right
-          moveSlide(MoveDirection.Right, anim => {
+          moveSlide(MoveDirection.Right, (anim) => {
             restartTimer()
             nextPhoto.src = assets[index].src
 
@@ -123,7 +125,7 @@ export const useAnimateSlide = ({ assets }: AnimateSlideInterface) => {
         }
         if (index < indexOfPhoto) {
           //to left
-          moveSlide(MoveDirection.Left, anim => {
+          moveSlide(MoveDirection.Left, (anim) => {
             restartTimer()
             previousPhoto.src = assets[index].src
 
@@ -156,8 +158,23 @@ export const useAnimateSlide = ({ assets }: AnimateSlideInterface) => {
     clearInterval(timer)
     timer = setInterval(() => {
       moveSlide(MoveDirection.Right)
-    }, intervalTime)
+    }, slideTime * 1000)
+  }
+  const setAnimDuration = (time: number) => {
+    animTime = time
+    restartTimer()
+  }
+  const setSlideDuration = (time: number) => {
+    slideTime = time
+    restartTimer()
   }
 
-  return { init, moveSlide, isAnimating, restartTimer }
+  return {
+    init,
+    moveSlide,
+    isAnimating,
+    restartTimer,
+    setAnimDuration,
+    setSlideDuration,
+  }
 }

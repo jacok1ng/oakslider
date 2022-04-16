@@ -516,16 +516,22 @@ function hmrAcceptRun(bundle, id) {
 },{}],"kuM8f":[function(require,module,exports) {
 var _imagesJson = require("../assets/images.json");
 var _shared = require("./shared");
+var _customForm = require("./shared/customForm");
 'use strict';
 //Handlers
 const right = document.querySelector('.right');
 const left = document.querySelector('.left');
 //Variables
 let assets = _imagesJson.data;
-const { moveSlide , init , restartTimer  } = _shared.useAnimateSlide({
+const { moveSlide , init , restartTimer , setAnimDuration , setSlideDuration  } = _shared.useAnimateSlide({
     assets
 });
+const { init: formInit  } = _customForm.useCustomForm({
+    setAnimDuration,
+    setSlideDuration
+});
 init();
+formInit();
 //Events
 right.addEventListener('click', ()=>{
     restartTimer();
@@ -536,7 +542,7 @@ left.addEventListener('click', ()=>{
     moveSlide(_shared.MoveDirection.Left);
 });
 
-},{"../assets/images.json":"8XdmB","./shared":"3itdU"}],"8XdmB":[function(require,module,exports) {
+},{"../assets/images.json":"8XdmB","./shared":"3itdU","./shared/customForm":"5gN6F"}],"8XdmB":[function(require,module,exports) {
 module.exports = JSON.parse("{\"data\":[{\"inUse\":true,\"src\":\"https://images.pexels.com/photos/9754/mountains-clouds-forest-fog.jpg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260\"},{\"inUse\":false,\"src\":\" https://images.pexels.com/photos/933054/pexels-photo-933054.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260\"},{\"inUse\":false,\"src\":\" https://images.pexels.com/photos/167699/pexels-photo-167699.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260\"}]}");
 
 },{}],"3itdU":[function(require,module,exports) {
@@ -557,7 +563,8 @@ const useAnimateSlide = ({ assets  })=>{
     let isAnimating = false;
     let indexOfPhoto = 0;
     let timer = null;
-    let intervalTime = 3500;
+    let slideTime = 3.5;
+    let animTime = 1.5;
     const currentPhoto = document.querySelector('.photo');
     const nextPhoto = document.querySelector('.next-photo');
     const previousPhoto = document.querySelector('.previous-photo');
@@ -569,9 +576,10 @@ const useAnimateSlide = ({ assets  })=>{
         //Insert pagination
         updateMenu();
         //Interval
+        clearInterval(timer);
         timer = setInterval(()=>{
             moveSlide(_types.MoveDirection.Right);
-        }, intervalTime);
+        }, slideTime * 1000);
     };
     const moveSlide = (direction, customAnim)=>{
         if (isAnimating) return;
@@ -580,13 +588,13 @@ const useAnimateSlide = ({ assets  })=>{
             const anim = currentPhoto.animate({
                 transform: 'translateX(-100%)'
             }, {
-                duration: 1500,
+                duration: animTime * 1000,
                 easing: 'ease'
             });
             nextPhoto.animate({
                 transform: 'translateX(0%)'
             }, {
-                duration: 1500,
+                duration: animTime * 1000,
                 easing: 'ease'
             });
             if (customAnim) return customAnim(anim);
@@ -606,13 +614,13 @@ const useAnimateSlide = ({ assets  })=>{
             const anim = currentPhoto.animate({
                 transform: 'translateX(100%)'
             }, {
-                duration: 1500,
+                duration: animTime * 1000,
                 easing: 'ease'
             });
             previousPhoto.animate({
                 transform: 'translateX(0%)'
             }, {
-                duration: 1500,
+                duration: animTime * 1000,
                 easing: 'ease'
             });
             if (customAnim) return customAnim(anim);
@@ -675,13 +683,23 @@ const useAnimateSlide = ({ assets  })=>{
         clearInterval(timer);
         timer = setInterval(()=>{
             moveSlide(_types.MoveDirection.Right);
-        }, intervalTime);
+        }, slideTime * 1000);
+    };
+    const setAnimDuration = (time)=>{
+        animTime = time;
+        restartTimer();
+    };
+    const setSlideDuration = (time)=>{
+        slideTime = time;
+        restartTimer();
     };
     return {
         init,
         moveSlide,
         isAnimating,
-        restartTimer
+        restartTimer,
+        setAnimDuration,
+        setSlideDuration
     };
 };
 
@@ -732,6 +750,52 @@ exports.export = function(dest, destName, get) {
     });
 };
 
-},{}]},["g75ug","kuM8f"], "kuM8f", "parcelRequireaa46")
+},{}],"5gN6F":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "useCustomForm", ()=>useCustomForm
+);
+const slideDuration = document.querySelector('#slide-duration');
+const animDuration = document.querySelector('#anim-duration');
+const customBtn = document.querySelector('.btn-custom');
+const revealMenu = document.querySelector('.reveal-menu');
+const slideBtn = document.querySelector('.apply-slide');
+const animBtn = document.querySelector('.apply-anim');
+const useCustomForm = ({ setAnimDuration , setSlideDuration  })=>{
+    const init = ()=>{
+        customBtn.addEventListener('click', ()=>{
+            revealMenu.classList.toggle('hide');
+        });
+        slideBtn.addEventListener('click', (e)=>{
+            e.preventDefault();
+            const { value  } = slideDuration;
+            if (!Number.isInteger(parseInt(value))) return alert('This is not a number!');
+            setSlideDuration(parseInt(value));
+            //Add class
+            slideBtn.classList.add('accept-btn');
+            setTimeout(()=>{
+                slideBtn.classList.remove('accept-btn');
+                slideDuration.value = '';
+            }, 500);
+        });
+        animBtn.addEventListener('click', (e)=>{
+            e.preventDefault();
+            const { value  } = animDuration;
+            if (!Number.isInteger(parseInt(value))) return alert('This is not a number!');
+            setAnimDuration(parseInt(value));
+            //Add class
+            animBtn.classList.add('accept-btn');
+            setTimeout(()=>{
+                animBtn.classList.remove('accept-btn');
+                animDuration.value = '';
+            }, 500);
+        });
+    };
+    return {
+        init
+    };
+};
+
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}]},["g75ug","kuM8f"], "kuM8f", "parcelRequireaa46")
 
 //# sourceMappingURL=index.6b815632.js.map
