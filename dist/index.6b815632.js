@@ -695,7 +695,24 @@ const useAnimateSlide = ({ assets , restartTimer  })=>{
     };
 };
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","./types":"51cXv"}],"gkKU3":[function(require,module,exports) {
+},{"./types":"51cXv","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"51cXv":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+var _data = require("./data");
+parcelHelpers.exportAll(_data, exports);
+
+},{"./data":"45J4E","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"45J4E":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "MoveDirection", ()=>MoveDirection
+);
+let MoveDirection;
+(function(MoveDirection1) {
+    MoveDirection1["Left"] = 'left';
+    MoveDirection1["Right"] = "Right";
+})(MoveDirection || (MoveDirection = {}));
+
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"gkKU3":[function(require,module,exports) {
 exports.interopDefault = function(a) {
     return a && a.__esModule ? a : {
         default: a
@@ -725,23 +742,6 @@ exports.export = function(dest, destName, get) {
     });
 };
 
-},{}],"51cXv":[function(require,module,exports) {
-var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
-parcelHelpers.defineInteropFlag(exports);
-var _data = require("./data");
-parcelHelpers.exportAll(_data, exports);
-
-},{"./data":"45J4E","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"45J4E":[function(require,module,exports) {
-var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
-parcelHelpers.defineInteropFlag(exports);
-parcelHelpers.export(exports, "MoveDirection", ()=>MoveDirection
-);
-let MoveDirection;
-(function(MoveDirection1) {
-    MoveDirection1["Left"] = 'left';
-    MoveDirection1["Right"] = "Right";
-})(MoveDirection || (MoveDirection = {}));
-
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}]},["g75ug","kuM8f"], "kuM8f", "parcelRequireaa46")
+},{}]},["g75ug","kuM8f"], "kuM8f", "parcelRequireaa46")
 
 //# sourceMappingURL=index.6b815632.js.map
