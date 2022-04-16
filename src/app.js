@@ -18,6 +18,23 @@ const { moveSlide, updateMenu } = useAnimateSlide(assets, restartTimer)
 
 initSlider()
 
+right.addEventListener('click', () => {
+  restartTimer()
+  moveSlide('right')
+})
+
+left.addEventListener('click', () => {
+  restartTimer()
+  moveSlide('left')
+})
+
+function restartTimer() {
+  clearInterval(timer)
+  timer = setInterval(() => {
+    moveSlide('right')
+  }, intervalTime)
+}
+
 function initSlider() {
   //Reset variables
   previousPhoto.src = assets[assets.length - 1].src
@@ -32,27 +49,3 @@ function initSlider() {
     moveSlide('right')
   }, intervalTime)
 }
-
-function restartTimer() {
-  clearInterval(timer)
-  moveSlide('right')
-  timer = setInterval(() => {
-    moveSlide('right')
-  }, intervalTime)
-}
-
-right.addEventListener('click', () => {
-  clearInterval(timer)
-  moveSlide('right')
-  timer = setInterval(() => {
-    moveSlide('right')
-  }, intervalTime)
-})
-
-left.addEventListener('click', () => {
-  clearInterval(timer)
-  moveSlide('left')
-  timer = setInterval(() => {
-    moveSlide('right')
-  }, intervalTime)
-})

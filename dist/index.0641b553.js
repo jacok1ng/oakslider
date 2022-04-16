@@ -529,6 +529,20 @@ let timer = null;
 let intervalTime = 3500;
 const { moveSlide , updateMenu  } = _shared.useAnimateSlide(assets, restartTimer);
 initSlider();
+right.addEventListener('click', ()=>{
+    restartTimer();
+    moveSlide('right');
+});
+left.addEventListener('click', ()=>{
+    restartTimer();
+    moveSlide('left');
+});
+function restartTimer() {
+    clearInterval(timer);
+    timer = setInterval(()=>{
+        moveSlide('right');
+    }, intervalTime);
+}
 function initSlider() {
     //Reset variables
     previousPhoto.src = assets[assets.length - 1].src;
@@ -541,27 +555,6 @@ function initSlider() {
         moveSlide('right');
     }, intervalTime);
 }
-function restartTimer() {
-    clearInterval(timer);
-    moveSlide('right');
-    timer = setInterval(()=>{
-        moveSlide('right');
-    }, intervalTime);
-}
-right.addEventListener('click', ()=>{
-    clearInterval(timer);
-    moveSlide('right');
-    timer = setInterval(()=>{
-        moveSlide('right');
-    }, intervalTime);
-});
-left.addEventListener('click', ()=>{
-    clearInterval(timer);
-    moveSlide('left');
-    timer = setInterval(()=>{
-        moveSlide('right');
-    }, intervalTime);
-});
 
 },{"../assets/images.json":"8XdmB","./shared":"kh1eD"}],"8XdmB":[function(require,module,exports) {
 module.exports = JSON.parse("{\"data\":[{\"inUse\":true,\"src\":\"https://images.pexels.com/photos/9754/mountains-clouds-forest-fog.jpg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260\"},{\"inUse\":false,\"src\":\" https://images.pexels.com/photos/933054/pexels-photo-933054.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260\"},{\"inUse\":false,\"src\":\" https://images.pexels.com/photos/167699/pexels-photo-167699.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260\"}]}");
