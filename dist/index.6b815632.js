@@ -518,9 +518,6 @@ var _imagesJson = require("../assets/images.json");
 var _shared = require("./shared");
 var _customForm = require("./shared/customForm");
 'use strict';
-//Handlers
-const right = document.querySelector('.right');
-const left = document.querySelector('.left');
 //Variables
 let assets = _imagesJson.data;
 const { moveSlide , init , restartTimer , setAnimDuration , setSlideDuration  } = _shared.useAnimateSlide({
@@ -532,15 +529,6 @@ const { init: formInit  } = _customForm.useCustomForm({
 });
 init();
 formInit();
-//Events
-right.addEventListener('click', ()=>{
-    restartTimer();
-    moveSlide(_shared.MoveDirection.Right);
-});
-left.addEventListener('click', ()=>{
-    restartTimer();
-    moveSlide(_shared.MoveDirection.Left);
-});
 
 },{"../assets/images.json":"8XdmB","./shared":"3itdU","./shared/customForm":"5gN6F"}],"8XdmB":[function(require,module,exports) {
 module.exports = JSON.parse("{\"data\":[{\"inUse\":true,\"src\":\"https://images.pexels.com/photos/9754/mountains-clouds-forest-fog.jpg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260\"},{\"inUse\":false,\"src\":\" https://images.pexels.com/photos/933054/pexels-photo-933054.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260\"},{\"inUse\":false,\"src\":\" https://images.pexels.com/photos/167699/pexels-photo-167699.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260\"}]}");
@@ -569,10 +557,20 @@ const useAnimateSlide = ({ assets  })=>{
     const nextPhoto = document.querySelector('.next-photo');
     const previousPhoto = document.querySelector('.previous-photo');
     const pagination = document.querySelector('.pagination');
+    const right = document.querySelector('.right');
+    const left = document.querySelector('.left');
     const init = ()=>{
         previousPhoto.src = assets[assets.length - 1].src;
         currentPhoto.src = assets[0].src;
         nextPhoto.src = assets[1].src;
+        right.addEventListener('click', ()=>{
+            restartTimer();
+            moveSlide(_types.MoveDirection.Right);
+        });
+        left.addEventListener('click', ()=>{
+            restartTimer();
+            moveSlide(_types.MoveDirection.Left);
+        });
         //Insert pagination
         updateMenu();
         //Interval
@@ -755,13 +753,13 @@ var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "useCustomForm", ()=>useCustomForm
 );
-const slideDuration = document.querySelector('#slide-duration');
-const animDuration = document.querySelector('#anim-duration');
-const customBtn = document.querySelector('.btn-custom');
-const revealMenu = document.querySelector('.reveal-menu');
-const slideBtn = document.querySelector('.apply-slide');
-const animBtn = document.querySelector('.apply-anim');
 const useCustomForm = ({ setAnimDuration , setSlideDuration  })=>{
+    const slideDuration = document.querySelector('#slide-duration');
+    const animDuration = document.querySelector('#anim-duration');
+    const customBtn = document.querySelector('.btn-custom');
+    const revealMenu = document.querySelector('.reveal-menu');
+    const slideBtn = document.querySelector('.apply-slide');
+    const animBtn = document.querySelector('.apply-anim');
     const init = ()=>{
         customBtn.addEventListener('click', ()=>{
             revealMenu.classList.toggle('hide');

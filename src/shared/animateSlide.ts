@@ -15,11 +15,23 @@ export const useAnimateSlide = ({ assets }: AnimateSlideInterface) => {
   const previousPhoto: HTMLImageElement =
     document.querySelector('.previous-photo')
   const pagination = document.querySelector('.pagination')
+  const right = document.querySelector('.right')
+  const left = document.querySelector('.left')
 
   const init = () => {
     previousPhoto.src = assets[assets.length - 1].src
     currentPhoto.src = assets[0].src
     nextPhoto.src = assets[1].src
+
+    right.addEventListener('click', () => {
+      restartTimer()
+      moveSlide(MoveDirection.Right)
+    })
+
+    left.addEventListener('click', () => {
+      restartTimer()
+      moveSlide(MoveDirection.Left)
+    })
 
     //Insert pagination
     updateMenu()

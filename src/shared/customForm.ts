@@ -1,11 +1,3 @@
-const slideDuration: HTMLInputElement =
-  document.querySelector('#slide-duration')
-const animDuration: HTMLInputElement = document.querySelector('#anim-duration')
-const customBtn = document.querySelector('.btn-custom')
-const revealMenu = document.querySelector('.reveal-menu')
-const slideBtn = document.querySelector('.apply-slide')
-const animBtn = document.querySelector('.apply-anim')
-
 interface CustomFormProps {
   setAnimDuration: (time: number) => void
   setSlideDuration: (time: number) => void
@@ -15,6 +7,15 @@ export const useCustomForm = ({
   setAnimDuration,
   setSlideDuration,
 }: CustomFormProps) => {
+  const slideDuration: HTMLInputElement =
+    document.querySelector('#slide-duration')
+  const animDuration: HTMLInputElement =
+    document.querySelector('#anim-duration')
+  const customBtn = document.querySelector('.btn-custom')
+  const revealMenu = document.querySelector('.reveal-menu')
+  const slideBtn = document.querySelector('.apply-slide')
+  const animBtn = document.querySelector('.apply-anim')
+
   const init = () => {
     customBtn.addEventListener('click', () => {
       revealMenu.classList.toggle('hide')
