@@ -527,7 +527,7 @@ const left = document.querySelector('.left');
 let assets = _imagesJson.data;
 let timer = null;
 let intervalTime = 3500;
-const { moveSlide , updateMenu  } = _shared.useAnimateSlide(assets);
+const { moveSlide , updateMenu  } = _shared.useAnimateSlide(assets, restartTimer);
 initSlider();
 function initSlider() {
     //Reset variables
@@ -537,6 +537,13 @@ function initSlider() {
     //Insert pagination
     updateMenu();
     //Interval
+    timer = setInterval(()=>{
+        moveSlide('right');
+    }, intervalTime);
+}
+function restartTimer() {
+    clearInterval(timer);
+    moveSlide('right');
     timer = setInterval(()=>{
         moveSlide('right');
     }, intervalTime);
@@ -570,7 +577,7 @@ var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "useAnimateSlide", ()=>useAnimateSlide
 );
-const useAnimateSlide = (assets)=>{
+const useAnimateSlide = (assets, restartTimer)=>{
     let isAnimating = false;
     let indexOfPhoto = 0;
     const currentPhoto = document.querySelector('.photo');
@@ -581,7 +588,6 @@ const useAnimateSlide = (assets)=>{
         if (isAnimating) return;
         isAnimating = true;
         if (direction === 'right') {
-            console.log('right');
             const anim = currentPhoto.animate({
                 transform: 'translateX(-100%)'
             }, {
@@ -594,21 +600,23 @@ const useAnimateSlide = (assets)=>{
                 duration: 1500,
                 easing: 'ease'
             });
-            if (customAnim) return customAnim();
+            if (customAnim) return customAnim(anim);
             anim.onfinish = ()=>{
-                assets[indexOfPhoto % assets.length].inUse = false;
-                assets[(indexOfPhoto + 1) % assets.length].inUse = true;
-                indexOfPhoto++;
+                ++indexOfPhoto;
+                if (indexOfPhoto > assets.length - 1) indexOfPhoto = 0;
+                const incrementedIndex = indexOfPhoto + 1 > assets.length - 1 ? 0 : indexOfPhoto + 1;
+                const decrementedIndex = indexOfPhoto - 1 < 0 ? assets.length - 1 : indexOfPhoto - 1;
+                assets[indexOfPhoto].inUse = true;
+                assets[decrementedIndex].inUse = false;
                 //Change photos
-                previousPhoto.src = assets[(indexOfPhoto - 1) % assets.length].src;
-                currentPhoto.src = assets[indexOfPhoto % assets.length].src;
-                nextPhoto.src = assets[(indexOfPhoto + 1) % assets.length].src;
+                previousPhoto.src = assets[decrementedIndex].src;
+                currentPhoto.src = assets[indexOfPhoto].src;
+                nextPhoto.src = assets[incrementedIndex].src;
                 updateMenu();
                 isAnimating = false;
             };
         }
         if (direction === 'left') {
-            console.log('left');
             const anim = currentPhoto.animate({
                 transform: 'translateX(100%)'
             }, {
@@ -621,7 +629,7 @@ const useAnimateSlide = (assets)=>{
                 duration: 1500,
                 easing: 'ease'
             });
-            if (customAnim) return customAnim();
+            if (customAnim) return customAnim(anim);
             anim.onfinish = ()=>{
                 --indexOfPhoto;
                 if (indexOfPhoto < 0) indexOfPhoto = assets.length - 1;
@@ -643,7 +651,41 @@ const useAnimateSlide = (assets)=>{
         ).join('')}`;
         document.querySelectorAll('.dot').forEach((item, index)=>item.addEventListener('click', ()=>{
                 if (index > indexOfPhoto) // to right
-                moveSlide('right', ()=>{});
+                moveSlide('right', (anim)=>{
+                    restartTimer();
+                    nextPhoto.src = assets[index].src;
+                    anim.onfinish = ()=>{
+                        const incrementedIndex = index + 1 > assets.length - 1 ? 0 : index + 1;
+                        const decrementedIndex = index - 1 < 0 ? assets.length - 1 : index - 1;
+                        assets[indexOfPhoto].inUse = false;
+                        assets[index].inUse = true;
+                        indexOfPhoto = index;
+                        //Change photos
+                        previousPhoto.src = assets[decrementedIndex].src;
+                        currentPhoto.src = assets[indexOfPhoto].src;
+                        nextPhoto.src = assets[incrementedIndex].src;
+                        updateMenu();
+                        isAnimating = false;
+                    };
+                });
+                if (index < indexOfPhoto) //to left
+                moveSlide('left', (anim)=>{
+                    restartTimer();
+                    previousPhoto.src = assets[index].src;
+                    anim.onfinish = ()=>{
+                        const incrementedIndex = index + 1 > assets.length - 1 ? 0 : index + 1;
+                        const decrementedIndex = index - 1 < 0 ? assets.length - 1 : index - 1;
+                        assets[indexOfPhoto].inUse = false;
+                        assets[index].inUse = true;
+                        indexOfPhoto = index;
+                        //Change photos
+                        previousPhoto.src = assets[decrementedIndex].src;
+                        currentPhoto.src = assets[indexOfPhoto].src;
+                        nextPhoto.src = assets[incrementedIndex].src;
+                        updateMenu();
+                        isAnimating = false;
+                    };
+                });
             })
         );
     };

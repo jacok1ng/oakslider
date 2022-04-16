@@ -1,4 +1,4 @@
-export const useAnimateSlide = assets => {
+export const useAnimateSlide = (assets, restartTimer) => {
   let isAnimating = false
   let indexOfPhoto = 0
   const currentPhoto = document.querySelector('.photo')
@@ -11,7 +11,6 @@ export const useAnimateSlide = assets => {
 
     isAnimating = true
     if (direction === 'right') {
-      console.log('right')
       const anim = currentPhoto.animate(
         { transform: 'translateX(-100%)' },
         { duration: 1500, easing: 'ease' }
@@ -21,18 +20,22 @@ export const useAnimateSlide = assets => {
         { duration: 1500, easing: 'ease' }
       )
 
-      if (customAnim) return customAnim()
+      if (customAnim) return customAnim(anim)
 
       anim.onfinish = () => {
-        assets[indexOfPhoto % assets.length].inUse = false
-        assets[(indexOfPhoto + 1) % assets.length].inUse = true
-
-        indexOfPhoto++
+        ++indexOfPhoto
+        if (indexOfPhoto > assets.length - 1) indexOfPhoto = 0
+        const incrementedIndex =
+          indexOfPhoto + 1 > assets.length - 1 ? 0 : indexOfPhoto + 1
+        const decrementedIndex =
+          indexOfPhoto - 1 < 0 ? assets.length - 1 : indexOfPhoto - 1
+        assets[indexOfPhoto].inUse = true
+        assets[decrementedIndex].inUse = false
 
         //Change photos
-        previousPhoto.src = assets[(indexOfPhoto - 1) % assets.length].src
-        currentPhoto.src = assets[indexOfPhoto % assets.length].src
-        nextPhoto.src = assets[(indexOfPhoto + 1) % assets.length].src
+        previousPhoto.src = assets[decrementedIndex].src
+        currentPhoto.src = assets[indexOfPhoto].src
+        nextPhoto.src = assets[incrementedIndex].src
 
         updateMenu()
 
@@ -40,7 +43,6 @@ export const useAnimateSlide = assets => {
       }
     }
     if (direction === 'left') {
-      console.log('left')
       const anim = currentPhoto.animate(
         { transform: 'translateX(100%)' },
         { duration: 1500, easing: 'ease' }
@@ -50,7 +52,7 @@ export const useAnimateSlide = assets => {
         { duration: 1500, easing: 'ease' }
       )
 
-      if (customAnim) return customAnim()
+      if (customAnim) return customAnim(anim)
 
       anim.onfinish = () => {
         --indexOfPhoto
@@ -86,10 +88,57 @@ export const useAnimateSlide = assets => {
       item.addEventListener('click', () => {
         if (index > indexOfPhoto) {
           // to right
-          moveSlide('right', () => {})
+          moveSlide('right', anim => {
+            restartTimer()
+            nextPhoto.src = assets[index].src
+
+            anim.onfinish = () => {
+              const incrementedIndex =
+                index + 1 > assets.length - 1 ? 0 : index + 1
+              const decrementedIndex =
+                index - 1 < 0 ? assets.length - 1 : index - 1
+              assets[indexOfPhoto].inUse = false
+              assets[index].inUse = true
+
+              indexOfPhoto = index
+
+              //Change photos
+              previousPhoto.src = assets[decrementedIndex].src
+              currentPhoto.src = assets[indexOfPhoto].src
+              nextPhoto.src = assets[incrementedIndex].src
+
+              updateMenu()
+
+              isAnimating = false
+            }
+          })
         }
         if (index < indexOfPhoto) {
           //to left
+          moveSlide('left', anim => {
+            restartTimer()
+            previousPhoto.src = assets[index].src
+
+            anim.onfinish = () => {
+              const incrementedIndex =
+                index + 1 > assets.length - 1 ? 0 : index + 1
+              const decrementedIndex =
+                index - 1 < 0 ? assets.length - 1 : index - 1
+              assets[indexOfPhoto].inUse = false
+              assets[index].inUse = true
+
+              indexOfPhoto = index
+
+              //Change photos
+              previousPhoto.src = assets[decrementedIndex].src
+              currentPhoto.src = assets[indexOfPhoto].src
+              nextPhoto.src = assets[incrementedIndex].src
+
+              updateMenu()
+
+              isAnimating = false
+            }
+          })
         }
       })
     )

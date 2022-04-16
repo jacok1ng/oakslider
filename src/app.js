@@ -14,7 +14,7 @@ const left = document.querySelector('.left')
 let assets = data
 let timer = null
 let intervalTime = 3500
-const { moveSlide, updateMenu } = useAnimateSlide(assets)
+const { moveSlide, updateMenu } = useAnimateSlide(assets, restartTimer)
 
 initSlider()
 
@@ -28,6 +28,14 @@ function initSlider() {
   updateMenu()
 
   //Interval
+  timer = setInterval(() => {
+    moveSlide('right')
+  }, intervalTime)
+}
+
+function restartTimer() {
+  clearInterval(timer)
+  moveSlide('right')
   timer = setInterval(() => {
     moveSlide('right')
   }, intervalTime)
