@@ -1,15 +1,18 @@
-'use strict'
-
 import { data } from '../assets/images.json'
-import { ImageAsset, MoveDirection, useAnimateSlide } from './shared'
-import { useCustomForm } from './shared/customForm'
+import { useAnimateSlide } from './animateSlide'
+import { useCustomForm } from './customForm'
+import { ImageAsset } from './types'
 
 //Variables
 let assets: ImageAsset[] = data
 const { init, setAnimDuration, setSlideDuration } = useAnimateSlide({
   assets,
 })
-const { init: formInit } = useCustomForm({ setAnimDuration, setSlideDuration })
+const { init: formInit } = useCustomForm({
+  setAnimDuration,
+  setSlideDuration,
+  assets,
+})
 
 init()
 formInit()

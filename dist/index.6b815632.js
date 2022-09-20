@@ -515,33 +515,133 @@ function hmrAcceptRun(bundle, id) {
 
 },{}],"kuM8f":[function(require,module,exports) {
 var _imagesJson = require("../assets/images.json");
-var _shared = require("./shared");
-var _customForm = require("./shared/customForm");
-'use strict';
+var _animateSlide = require("./animateSlide");
+var _customForm = require("./customForm");
 //Variables
 let assets = _imagesJson.data;
-const { init , setAnimDuration , setSlideDuration  } = _shared.useAnimateSlide({
+const { init , setAnimDuration , setSlideDuration  } = _animateSlide.useAnimateSlide({
     assets
 });
 const { init: formInit  } = _customForm.useCustomForm({
     setAnimDuration,
-    setSlideDuration
+    setSlideDuration,
+    assets
 });
 init();
 formInit();
 
-},{"../assets/images.json":"8XdmB","./shared":"3itdU","./shared/customForm":"5gN6F"}],"8XdmB":[function(require,module,exports) {
-module.exports = JSON.parse("{\"data\":[{\"inUse\":true,\"src\":\"https://images.pexels.com/photos/9754/mountains-clouds-forest-fog.jpg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260\"},{\"inUse\":false,\"src\":\" https://images.pexels.com/photos/933054/pexels-photo-933054.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260\"},{\"inUse\":false,\"src\":\" https://images.pexels.com/photos/167699/pexels-photo-167699.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260\"}]}");
+},{"../assets/images.json":"8XdmB","./customForm":"8m5VV","./animateSlide":"53jdg"}],"8XdmB":[function(require,module,exports) {
+module.exports = JSON.parse("{\"data\":[{\"inUse\":true,\"name\":\"Mountain 1\",\"src\":\"https://images.pexels.com/photos/9754/mountains-clouds-forest-fog.jpg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260\"},{\"inUse\":false,\"name\":\"Mountain 2\",\"src\":\" https://images.pexels.com/photos/933054/pexels-photo-933054.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260\"},{\"inUse\":false,\"name\":\"Mountain 3\",\"src\":\" https://images.pexels.com/photos/167699/pexels-photo-167699.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260\"}]}");
 
-},{}],"3itdU":[function(require,module,exports) {
+},{}],"8m5VV":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
-var _animateSlide = require("./animateSlide");
-parcelHelpers.exportAll(_animateSlide, exports);
-var _types = require("./types");
-parcelHelpers.exportAll(_types, exports);
+parcelHelpers.export(exports, "useCustomForm", ()=>useCustomForm
+);
+const useCustomForm = ({ setAnimDuration , setSlideDuration , assets  })=>{
+    const slideDuration = document.querySelector('#slide-duration');
+    const animDuration = document.querySelector('#anim-duration');
+    const customBtn = document.querySelector('.btn-custom');
+    const imgBtn = document.querySelector('.img-btn');
+    const revealMenu = document.querySelector('.reveal-menu');
+    const slideBtn = document.querySelector('.apply-slide');
+    const animBtn = document.querySelector('.apply-anim');
+    const overlay = document.querySelector('.overlay');
+    const itemContainer = document.querySelector('.item-container');
+    const init = ()=>{
+        imgBtn.addEventListener('click', (e)=>{
+            e.preventDefault();
+            overlay.classList.add('show');
+            console.log('elo');
+            assets.forEach((asset)=>{
+                const el = document.createElement(`<div class="item-container">
+        <div class="item-image">
+          <img
+            class="image"
+            src="${asset.src}"></img>
+            alt="listitem"
+          />
+        </div>
+        <div class="item-name">${asset.name}</div>
+        <div class="item-delete clickable">
+          <i class="fa-solid fa-trash"></i>
+        </div>
+      </div>`);
+                itemContainer.insertAdjacentElement('afterbegin', el);
+            });
+        });
+        overlay.addEventListener('click', ()=>{
+            overlay.classList.remove('show');
+        });
+        customBtn.addEventListener('click', ()=>{
+            revealMenu.classList.toggle('hide');
+        });
+        slideBtn.addEventListener('click', (e)=>{
+            e.preventDefault();
+            const { value  } = slideDuration;
+            const parsedValue = parseInt(value);
+            if (!value && !Number.isInteger(parsedValue) && parsedValue > 0) return alert('This number is not allowed!');
+            setSlideDuration(parsedValue);
+            //Add class
+            slideBtn.classList.add('accept-btn');
+            setTimeout(()=>{
+                slideBtn.classList.remove('accept-btn');
+                slideDuration.placeholder = `Current ${parsedValue}`;
+                slideDuration.value = '';
+            }, 500);
+        });
+        animBtn.addEventListener('click', (e)=>{
+            e.preventDefault();
+            const { value  } = animDuration;
+            const parsedValue = parseInt(value);
+            if (!value && !Number.isInteger(parsedValue) && parsedValue > 0) return alert('This number is not allowed!');
+            setAnimDuration(parsedValue);
+            //Add class
+            animBtn.classList.add('accept-btn');
+            setTimeout(()=>{
+                animBtn.classList.remove('accept-btn');
+                animDuration.placeholder = `Current ${parsedValue}`;
+                // console.log(animDuration)
+                animDuration.value = '';
+            }, 500);
+        });
+    };
+    return {
+        init
+    };
+};
 
-},{"./animateSlide":"dO2FM","./types":"51cXv","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"dO2FM":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"gkKU3":[function(require,module,exports) {
+exports.interopDefault = function(a) {
+    return a && a.__esModule ? a : {
+        default: a
+    };
+};
+exports.defineInteropFlag = function(a) {
+    Object.defineProperty(a, '__esModule', {
+        value: true
+    });
+};
+exports.exportAll = function(source, dest) {
+    Object.keys(source).forEach(function(key) {
+        if (key === 'default' || key === '__esModule' || dest.hasOwnProperty(key)) return;
+        Object.defineProperty(dest, key, {
+            enumerable: true,
+            get: function() {
+                return source[key];
+            }
+        });
+    });
+    return dest;
+};
+exports.export = function(dest, destName, get) {
+    Object.defineProperty(dest, destName, {
+        enumerable: true,
+        get: get
+    });
+};
+
+},{}],"53jdg":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "useAnimateSlide", ()=>useAnimateSlide
@@ -574,7 +674,7 @@ const useAnimateSlide = ({ assets  })=>{
         //Insert pagination
         updateMenu();
         //Interval
-        clearInterval(timer);
+        timer && clearInterval(timer);
         timer = setInterval(()=>{
             moveSlide(_types.MoveDirection.Right);
         }, slideTime * 1000);
@@ -678,7 +778,7 @@ const useAnimateSlide = ({ assets  })=>{
         nextPhoto.src = assets[incrementedIndex].src;
     };
     const restartTimer = ()=>{
-        clearInterval(timer);
+        timer && clearInterval(timer);
         timer = setInterval(()=>{
             moveSlide(_types.MoveDirection.Right);
         }, slideTime * 1000);
@@ -698,13 +798,13 @@ const useAnimateSlide = ({ assets  })=>{
     };
 };
 
-},{"./types":"51cXv","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"51cXv":[function(require,module,exports) {
+},{"./types":"7OxhG","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"7OxhG":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 var _data = require("./data");
 parcelHelpers.exportAll(_data, exports);
 
-},{"./data":"45J4E","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"45J4E":[function(require,module,exports) {
+},{"./data":"hT6zX","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"hT6zX":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "MoveDirection", ()=>MoveDirection
@@ -715,82 +815,6 @@ let MoveDirection;
     MoveDirection1["Right"] = "Right";
 })(MoveDirection || (MoveDirection = {}));
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"gkKU3":[function(require,module,exports) {
-exports.interopDefault = function(a) {
-    return a && a.__esModule ? a : {
-        default: a
-    };
-};
-exports.defineInteropFlag = function(a) {
-    Object.defineProperty(a, '__esModule', {
-        value: true
-    });
-};
-exports.exportAll = function(source, dest) {
-    Object.keys(source).forEach(function(key) {
-        if (key === 'default' || key === '__esModule' || dest.hasOwnProperty(key)) return;
-        Object.defineProperty(dest, key, {
-            enumerable: true,
-            get: function() {
-                return source[key];
-            }
-        });
-    });
-    return dest;
-};
-exports.export = function(dest, destName, get) {
-    Object.defineProperty(dest, destName, {
-        enumerable: true,
-        get: get
-    });
-};
-
-},{}],"5gN6F":[function(require,module,exports) {
-var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
-parcelHelpers.defineInteropFlag(exports);
-parcelHelpers.export(exports, "useCustomForm", ()=>useCustomForm
-);
-const useCustomForm = ({ setAnimDuration , setSlideDuration  })=>{
-    const slideDuration = document.querySelector('#slide-duration');
-    const animDuration = document.querySelector('#anim-duration');
-    const customBtn = document.querySelector('.btn-custom');
-    const revealMenu = document.querySelector('.reveal-menu');
-    const slideBtn = document.querySelector('.apply-slide');
-    const animBtn = document.querySelector('.apply-anim');
-    const init = ()=>{
-        customBtn.addEventListener('click', ()=>{
-            revealMenu.classList.toggle('hide');
-        });
-        slideBtn.addEventListener('click', (e)=>{
-            e.preventDefault();
-            const { value  } = slideDuration;
-            if (!Number.isInteger(parseInt(value))) return alert('This is not a number!');
-            setSlideDuration(parseInt(value));
-            //Add class
-            slideBtn.classList.add('accept-btn');
-            setTimeout(()=>{
-                slideBtn.classList.remove('accept-btn');
-                slideDuration.value = '';
-            }, 500);
-        });
-        animBtn.addEventListener('click', (e)=>{
-            e.preventDefault();
-            const { value  } = animDuration;
-            if (!Number.isInteger(parseInt(value))) return alert('This is not a number!');
-            setAnimDuration(parseInt(value));
-            //Add class
-            animBtn.classList.add('accept-btn');
-            setTimeout(()=>{
-                animBtn.classList.remove('accept-btn');
-                animDuration.value = '';
-            }, 500);
-        });
-    };
-    return {
-        init
-    };
-};
-
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}]},["g75ug","kuM8f"], "kuM8f", "parcelRequireaa46")
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}]},["g75ug","kuM8f"], "kuM8f", "parcelRequire5a49")
 
 //# sourceMappingURL=index.6b815632.js.map

@@ -2,14 +2,17 @@
   "data": [
     {
       "inUse": true,
+      "name": "Mountain 1",
       "src": "https://images.pexels.com/photos/9754/mountains-clouds-forest-fog.jpg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260"
     },
     {
       "inUse": false,
+      "name": "Mountain 2",
       "src": " https://images.pexels.com/photos/933054/pexels-photo-933054.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260"
     },
     {
       "inUse": false,
+      "name": "Mountain 3",
       "src": " https://images.pexels.com/photos/167699/pexels-photo-167699.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260"
     }
   ]

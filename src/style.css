@@ -155,3 +155,92 @@ input {
   background: #0066ff;
   border-radius: 0.3rem;
 }
+
+.overlay {
+  display: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.445);
+  z-index: 2;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+  height: 100vh;
+  transition: 0.5s all;
+}
+
+.modal {
+  width: 70%;
+  height: 70%;
+  background-color: white;
+  border-radius: 1rem;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  padding: 1rem;
+  z-index: 5;
+}
+
+.modal > header {
+  width: 100%;
+  min-height: 10%;
+  background-color: aquamarine;
+}
+
+.modal > .content {
+  flex-basis: 3;
+  width: 100%;
+  min-height: 80%;
+  background-color: antiquewhite;
+}
+
+.modal > footer {
+  flex-basis: 1;
+  width: 100%;
+  min-height: 10%;
+  background-color: #0066ff;
+}
+
+.show {
+  display: flex;
+}
+
+.flex {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.item-container {
+  width: 100%;
+  background-color: rgb(248, 248, 248);
+  min-height: 3rem;
+  padding: 1rem 2rem;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  padding: 0 1rem;
+}
+
+.item-image {
+  width: 2rem;
+  height: 2rem;
+  border-radius: 0.5rem;
+}
+
+.item-delete {
+  transition: 0.2s all;
+}
+
+.item-delete:hover {
+  scale: 1.1;
+}
+
+li {
+  list-style: none;
+}

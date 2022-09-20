@@ -1,14 +1,16 @@
 {
-  "name": "Slider",
+  "name": "oak-slider",
   "version": "1.0.0",
   "main": "app.js",
   "author": "Jaca",
   "license": "MIT",
-  "type": "commonjs",
+  "type": "module",
+  "source": "src/index.html",
   "scripts": {
-    "start": "parcel ./src/index.html"
+    "start": "parcel ./src/index.html",
+    "build": "parcel build"
   },
   "devDependencies": {
-    "parcel": "^2.4.1"
+    "parcel": "latest"
   }
 }

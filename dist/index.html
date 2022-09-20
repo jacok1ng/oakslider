@@ -12,6 +12,27 @@
     <title>Oak Slider</title>
   </head>
   <body>
+    <div class="overlay">
+      <div class="modal">
+        <header class="flex"><h2>Manage your content</h2></header>
+        <div class="content">
+          <ul>
+            <li>
+              <div class="item-container">
+                <div class="item-image">
+                  <img class="image" src="https://images.pexels.com/photos/1367105/pexels-photo-1367105.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260" alt="listitem">
+                </div>
+                <div class="item-name">This is my item</div>
+                <div class="item-delete clickable">
+                  <i class="fa-solid fa-trash"></i>
+                </div>
+              </div>
+            </li>
+          </ul>
+        </div>
+        <footer class="flex">footer</footer>
+      </div>
+    </div>
     <main>
       <div class="slider">
         <div class="photos">
@@ -36,15 +57,13 @@
           <div class="margin-1 column">
             <label for="slide-interval">Duration of slide</label>
             <div class="row">
-              <input id="slide-duration" type="number"><button class="apply-btn apply-slide clickable">
-                Apply
-              </button>
+              <input id="slide-duration" type="number" min="0" max="20"><button class="apply-btn apply-slide clickable">Apply</button>
             </div>
           </div>
           <div class="margin-1 column">
             <label for="anim-interval">Duration of animation</label>
             <div class="row">
-              <input id="anim-duration" type="number"><button class="apply-btn apply-anim clickable">
+              <input id="anim-duration" type="number" min="0" max="20"><button class="apply-btn apply-anim clickable">
                 Apply
               </button>
             </div>
